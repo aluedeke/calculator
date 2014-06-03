@@ -22,6 +22,7 @@ import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.test.ActivityInstrumentationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,22 +34,25 @@ import android.graphics.Rect;
 import android.test.TouchUtils;
 
 import com.android.calculator2.Calculator;
-import com.android.calculator2.R;
 import com.android.calculator2.CalculatorDisplay;
+import com.android.calculator2.R;
+import com.robotium.solo.Solo;
 
 /**
  * Instrumentation tests for poking some buttons
  *
  */
 
-public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <Calculator>{
+public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase2<Calculator> {
     public boolean setup = false;
     private static final String TAG = "CalculatorTests";
     Calculator mActivity = null;
     Instrumentation mInst = null;
+
+    private Solo solo;
     
     public CalculatorHitSomeButtons() {
-        super("com.android.calculator2", Calculator.class);
+        super(Calculator.class);
     }
     
     @Override
@@ -57,6 +61,8 @@ public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <C
         
         mActivity = getActivity();
         mInst = getInstrumentation();
+
+        solo = new Solo(mInst, mActivity);
     }
     
     @Override
@@ -66,7 +72,7 @@ public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <C
     
     @LargeTest
     public void testPressSomeKeys() {
-        Log.v(TAG, "Pressing some keys!");
+        Log.i(TAG, "Pressing some keys!");
         
         // Make sure that we clear the output
         press(KeyEvent.KEYCODE_ENTER);
@@ -84,30 +90,30 @@ public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <C
     }
     
     @LargeTest
-    public void testTapSomeButtons() {
+    public void testTapSomeButtons() throws InterruptedException {
         Log.v(TAG, "Tapping some buttons!");
-        
+
         // Make sure that we clear the output
-        tap(R.id.equal);
-        tap(R.id.del);
-        
+        tap("=");
+        tap("CLR");
+
         // 567 / 3 => 189
-        tap(R.id.digit5);
-        tap(R.id.digit6);
-        tap(R.id.digit7);
-        tap(R.id.div);
-        tap(R.id.digit3);
-        tap(R.id.equal);
-        
-        assertEquals(displayVal(), "189");
+        tap("5");
+        tap("6");
+        tap("7");
+        tap(mActivity.getText(R.string.minus));
+        tap("3");
+        tap("=");
+
+        assertEquals(displayVal(), "564");
         
         // make sure we can continue calculations also
         // 189 - 789 => -600
-        tap(R.id.minus);
-        tap(R.id.digit7);
-        tap(R.id.digit8);
-        tap(R.id.digit9);
-        tap(R.id.equal);
+        tap("-");
+        tap("7");
+        tap("8");
+        tap("0");
+        tap("=");
         
         // Careful: the first digit in the expected value is \u2212, not "-" (a hyphen)
         assertEquals(displayVal(), mActivity.getString(R.string.minus) + "600");
@@ -115,16 +121,13 @@ public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <C
   
     // helper functions
     private void press(int keycode) {
-        mInst.sendKeyDownUpSync(keycode);
+        solo.sendKey(keycode);
     }
     
-    private boolean tap(int id) {
-        View view = mActivity.findViewById(id);
-        if(view != null) {
-            TouchUtils.clickView(this, view);
-            return true;
-        }
-        return false;
+    private  void tap(CharSequence character) {
+        Log.i(TAG, "tap view " + character);
+
+        solo.clickOnButton(character.toString());
     }
   
     private String displayVal() {
@@ -134,7 +137,7 @@ public class CalculatorHitSomeButtons extends ActivityInstrumentationTestCase <C
         EditText box = (EditText) display.getCurrentView();
         assertNotNull(box);
         
-        return box.getText().toString();
+        return box.getText().toString().trim();
     }
 }
 

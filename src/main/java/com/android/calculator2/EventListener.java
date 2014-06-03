@@ -17,6 +17,7 @@
 package com.android.calculator2;
 
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ class EventListener implements View.OnKeyListener,
 
     @Override
     public void onClick(View view) {
+        Log.i("CalculatorTests", Integer.toString(view.getId()));
         int id = view.getId();
         switch (id) {
         case R.id.del:

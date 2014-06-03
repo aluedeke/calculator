@@ -19,8 +19,6 @@ package com.android.calculator2;
 import android.test.InstrumentationTestRunner;
 import android.test.InstrumentationTestSuite;
 
-import com.android.calculator2.CalculatorHitSomeButtons;
-
 import junit.framework.TestSuite;
 
 public class CalculatorInstrumentationTestRunner extends InstrumentationTestRunner {

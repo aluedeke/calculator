@@ -23,6 +23,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.method.NumberKeyListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ViewSwitcher;
@@ -113,6 +114,7 @@ class CalculatorDisplay extends ViewSwitcher {
     void insert(String delta) {
         EditText editor = (EditText) getCurrentView();
         int cursor = editor.getSelectionStart();
+        Log.i("Test", "Pressing some keys! " + cursor + " " + delta);
         editor.getText().insert(cursor, delta);
     }
 
