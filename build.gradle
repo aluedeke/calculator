@@ -34,6 +34,7 @@ android {
 	buildTypes {
 		release {
 			signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.txt'
 		}
 	}
 
@@ -57,6 +58,5 @@ dependencies {
     compile 'com.google.guava:guava:17.0'
     compile files('arity-2.1.2.jar')
 
-    androidTestCompile 'junit:junitL'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
 }
