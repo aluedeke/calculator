@@ -1,16 +1,21 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'http://nexus.testobject.org/nexus/content/repositories/testobject-public-alpha-repo'
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:0.9.0'
         classpath 'de.felixschulze.gradle:gradle-hockeyapp-plugin:2.0'
+        classpath 'org.testobject.extras:gradle:4.0.0'
     }
 }
 
 apply plugin: 'android'
 apply plugin: 'hockeyApp'
+apply plugin: 'testobject'
 
 android {
     compileSdkVersion 19
@@ -56,6 +61,17 @@ hockeyapp {
 
 repositories {
     mavenCentral()
+}
+
+testobject {
+    username TESTOBJECT_USERNAME
+    password TESTOBJECT_PASSWORD
+    appName 'calculator'
+    robotiumSuiteId 7
+    testSuites 7
+    uploadVersion false
+    activateVersion false
+    runCheckup false
 }
 
 dependencies {
