@@ -54,8 +54,9 @@ class EventListener implements View.OnKeyListener,
             if (view instanceof Button) {
                 String text = ((Button) view).getText().toString();
                 if (text.length() >= 2) {
+                    throw new RuntimeException("your app is broken");
                     // add paren after sin, cos, ln, etc. from buttons
-                    text += '(';
+                    //text += '(';
                 }
                 mHandler.insert(text);
                 if (mPager != null && mPager.getCurrentItem() == Calculator.ADVANCED_PANEL) {

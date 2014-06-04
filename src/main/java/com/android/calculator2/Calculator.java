@@ -36,8 +36,14 @@ import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 public class Calculator extends Activity implements PanelSwitcher.Listener, Logic.Listener,
         OnClickListener, OnMenuItemClickListener {
+
+    private static final java.lang.String APP_ID = "024c8abd5028107f193dce32ccfde083";
+
     EventListener mListener = new EventListener();
     private CalculatorDisplay mDisplay;
     private Persist mPersist;
@@ -117,6 +123,14 @@ public class Calculator extends Activity implements PanelSwitcher.Listener, Logi
 
         mLogic.resumeWithHistory();
         updateDeleteMode();
+
+        checkForUpdates();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkForCrashes();
     }
 
     private void updateDeleteMode() {
@@ -260,6 +274,17 @@ public class Calculator extends Activity implements PanelSwitcher.Listener, Logi
         updateDeleteMode();
     }
 
+    private void checkForCrashes() {
+        log("checkForCrashes");
+        CrashManager.register(this, APP_ID);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        log("checkForUpdates");
+        UpdateManager.register(this, APP_ID);
+    }
+
     class PageAdapter extends PagerAdapter {
         private View mSimplePage;
         private View mAdvancedPage;
@@ -333,5 +358,6 @@ public class Calculator extends Activity implements PanelSwitcher.Listener, Logi
         @Override
         public void restoreState(Parcelable state, ClassLoader loader) {
         }
+
     }
 }
