@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.0'
+        classpath 'com.android.tools.build:gradle:0.13.+'
     }
 }
 
@@ -12,7 +12,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    buildToolsVersion "19.1.0"
     
     defaultConfig {
         versionCode 1
@@ -46,7 +46,6 @@ android {
 	lintOptions {
 		disable 'MissingTranslation', 'Instantiatable', 'NewApi'
 	}
-    
 }
 
 repositories {
@@ -58,5 +57,6 @@ dependencies {
     compile 'com.google.guava:guava:17.0'
     compile files('arity-2.1.2.jar')
 
+    androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
 }
